@@ -1,0 +1,128 @@
+/* ===== Design tokens: change colours here ===== */
+:root {
+  --ink: #221650; --muted: #5d5588; --bg: #f1edff; --dot: #d3c9ff; --card: #fff;
+  --accent: #6c4bff; --check: #3a86ff; --moving: #ff7a3d; --source: #ffd23f;
+  --found: #2ec4a6; --removed: #ff4d6d; --miss: #b8b2d6;
+  --shadow: 4px 4px 0 var(--ink);           /* hard "sticker" shadow */
+  --mono: ui-monospace, Consolas, "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; color: var(--ink); line-height: 1.5;
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  background: var(--bg) radial-gradient(var(--dot) 1.5px, transparent 1.5px) 0 0 / 22px 22px;
+}
+
+/* ===== Hero: the title is itself an array ===== */
+.page-header { text-align: center; padding: 34px 16px 6px; }
+.page-header h1 { margin: 0; display: flex; justify-content: center; gap: 8px; }
+.letter { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.letter b {
+  width: 64px; height: 64px; display: grid; place-items: center; font-size: 2.2rem;
+  background: var(--c); border: 3px solid var(--ink); border-radius: 12px;
+  box-shadow: var(--shadow); transition: transform .2s;
+}
+.letter:hover b { transform: translateY(-8px) rotate(-5deg); }
+.letter i { font: normal .8rem var(--mono); color: var(--muted); }
+.letter:nth-child(1) { --c: var(--source); } .letter:nth-child(2) { --c: var(--found); }
+.letter:nth-child(3) { --c: var(--moving); } .letter:nth-child(4) { --c: #9ec5ff; }
+.letter:nth-child(5) { --c: #ffb3c6; }
+.page-header p { margin: 16px 0 0; color: var(--muted); }
+
+main { max-width: 980px; margin: 0 auto; padding: 16px; display: grid; gap: 20px; }
+.card {
+  background: var(--card); border: 3px solid var(--ink); border-radius: 16px;
+  padding: 18px 20px; box-shadow: var(--shadow);
+}
+h2 { margin: 0 0 12px; font-size: 1.3rem; }
+
+/* ===== Form controls ===== */
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); }
+input[type="text"], input[type="number"] {
+  padding: 8px 10px; min-width: 0; font-size: 1rem; color: var(--ink);
+  border: 3px solid var(--ink); border-radius: 10px; background: #fff;
+}
+input[type="text"] { flex: 1 1 260px; }
+input[type="number"] { width: 140px; }
+input:focus, button:focus-visible { outline: 3px solid var(--check); outline-offset: 2px; }
+button {
+  padding: 9px 16px; color: #fff; background: var(--accent); cursor: pointer;
+  border: 3px solid var(--ink); border-radius: 10px; box-shadow: 3px 3px 0 var(--ink);
+  font-family: inherit; font-size: .95rem; font-weight: 700; transition: transform .1s, box-shadow .1s;
+}
+button:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+button:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secondary { background: var(--check); }
+button.danger { background: var(--removed); }
+.hint { margin: 8px 0; font-size: .9rem; color: var(--muted); }
+.hidden { display: none; }
+
+/* ===== Tabs ===== */
+.tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.tab { background: #fff; color: var(--ink); }
+.tab.active { background: var(--ink); color: #fff; }
+.speed { margin-top: 16px; max-width: 240px; }
+
+/* ===== The array ===== */
+.array-view { position: relative; display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; padding-top: 6px; }
+.cell { width: 66px; text-align: center; }
+.tag { height: 24px; font-weight: 800; color: var(--check); animation: bob 1s ease-in-out infinite; }
+.box {
+  height: 60px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 800; background: #fff;
+  border: 3px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);
+  transition: background .25s, transform .25s;
+}
+.box.small { font-size: .9rem; }
+.box.empty { background: transparent; border: 3px dashed var(--miss); box-shadow: none; }
+.index { margin-top: 6px; font: 700 .85rem var(--mono); }
+.addr { font: .7rem var(--mono); color: var(--muted); }   /* memory address under each box */
+
+/* highlight states (class names are set from script.js) */
+.box.check   { background: #cfe1ff; transform: translateY(-6px); }
+.box.moving  { background: #ffd2b5; transform: translateY(-6px); }
+.box.source  { background: #fff0a8; }
+.box.found   { background: #b8f0e2; transform: translateY(-6px); animation: pop .5s; }
+.box.removed { background: #ffc2ce; }
+.box.miss    { background: #e6e2f5; color: var(--muted); box-shadow: none; }
+.box.out     { opacity: .3; }
+.box.moving.from-left  { animation: fromLeft .45s; }
+.box.moving.from-right { animation: fromRight .45s; }
+
+.confetti { position: absolute; width: 9px; height: 9px; border-radius: 2px; animation: burst 1s ease-out forwards; pointer-events: none; }
+@keyframes fromLeft  { from { transform: translate(-40px, -6px); opacity: .3; } }
+@keyframes fromRight { from { transform: translate(40px, -6px); opacity: .3; } }
+@keyframes pop  { 0% { transform: scale(.6); } 60% { transform: translateY(-12px) scale(1.12); } }
+@keyframes bob  { 50% { transform: translateY(-4px); } }
+@keyframes burst { to { transform: translate(var(--x), var(--y)) rotate(400deg); opacity: 0; } }
+
+/* ===== Status bubble ===== */
+.status {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px; font-weight: 600;
+  border: 3px solid var(--ink); border-radius: 14px; box-shadow: var(--shadow);
+}
+.face { font-size: 1.8rem; line-height: 1; }
+.status.info { background: #dfe9ff; } .status.success { background: #d3f5ec; }
+.status.warning { background: #fff1bf; } .status.error { background: #ffdde3; }
+
+/* ===== Steps ===== */
+.steps { margin: 0; padding-left: 26px; max-height: 300px; overflow-y: auto; }
+.steps li { padding: 4px 0; border-bottom: 2px dashed var(--dot); }
+.steps .placeholder { list-style: none; margin-left: -26px; border: 0; color: var(--muted); }
+
+/* ===== Legend ===== */
+.legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding-bottom: 28px; font-size: .85rem; }
+.legend span { background: #fff; border: 2px solid var(--ink); border-radius: 20px; padding: 2px 12px; }
+.dot { display: inline-block; width: 12px; height: 12px; margin-right: 6px; border: 2px solid var(--ink); border-radius: 3px; vertical-align: -2px; }
+.dot.check { background: var(--check); } .dot.moving { background: var(--moving); }
+.dot.source { background: var(--source); } .dot.found { background: var(--found); }
+.dot.removed { background: var(--removed); } .dot.miss { background: var(--miss); }
+
+@media (max-width: 520px) {
+  .letter b { width: 46px; height: 46px; font-size: 1.6rem; }
+  .cell { width: 50px; } .box { height: 50px; font-size: 1rem; }
+  input[type="number"] { width: 100%; } label { flex: 1 1 45%; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
