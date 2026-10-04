@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Array Simulation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="page-header">
+    <h1 aria-label="Array">
+      <span class="letter" aria-hidden="true"><b>A</b><i>0</i></span>
+      <span class="letter" aria-hidden="true"><b>R</b><i>1</i></span>
+      <span class="letter" aria-hidden="true"><b>R</b><i>2</i></span>
+      <span class="letter" aria-hidden="true"><b>A</b><i>3</i></span>
+      <span class="letter" aria-hidden="true"><b>Y</b><i>4</i></span>
+    </h1>
+    <p>Array Simulation: watch addresses, insertion, deletion and searching happen one step at a time.</p>
+  </header>
+
+  <main>
+    <!-- ===== 1. The array (shared by every operation) ===== -->
+    <section class="card">
+      <h2>Your array</h2>
+      <div class="row">
+        <input id="arrayInput" type="text" value="10, 20, 30, 40, 50"
+               aria-label="Array elements, separated by commas">
+        <button id="setBtn" class="op-btn">Set array</button>
+        <button id="sortBtn" class="op-btn secondary">Sort ascending</button>
+        <button id="resetBtn" class="danger">Reset</button>
+      </div>
+      <p class="hint">Enter up to 12 whole numbers (-999 to 9999), separated by commas or spaces. The small number under each box is its memory address, worked out from the base address and element size in the Address tab.</p>
+
+      <div id="arrayView" class="array-view" aria-live="polite"></div>
+      <div id="status" class="status info">Ready. Pick an operation below.</div>
+    </section>
+
+    <!-- ===== 2. Operations ===== -->
+    <section class="card">
+      <nav class="tabs" aria-label="Operations">
+        <button class="tab active" data-op="address">Address calculation</button>
+        <button class="tab" data-op="insert">Insertion</button>
+        <button class="tab" data-op="delete">Deletion</button>
+        <button class="tab" data-op="linear">Linear search</button>
+        <button class="tab" data-op="binary">Binary search</button>
+      </nav>
+
+      <!-- Address calculation -->
+      <div class="panel" id="panel-address">
+        <p class="hint">Formula: <b>Address = Base + (i − LB) × w</b> &nbsp;(LB = lower bound, w = element size in bytes)</p>
+        <div class="row">
+          <label>Base address <input id="addrBase" type="number" value="1000"></label>
+          <label>Element size (bytes) <input id="addrSize" type="number" value="4"></label>
+          <label>Index i <input id="addrIndex" type="number" value="3"></label>
+          <label>Lower bound LB <input id="addrLB" type="number" value="0"></label>
+          <button id="addrBtn" class="op-btn">Calculate</button>
+        </div>
+      </div>
+
+      <!-- Insertion -->
+      <div class="panel hidden" id="panel-insert">
+        <div class="row">
+          <label>Value <input id="insValue" type="number" value="25"></label>
+          <label>Position (index) <input id="insPos" type="number" value="2"></label>
+          <button id="insBtn" class="op-btn">Insert</button>
+        </div>
+      </div>
+
+      <!-- Deletion -->
+      <div class="panel hidden" id="panel-delete">
+        <div class="row">
+          <label>Position (index) <input id="delPos" type="number" value="1"></label>
+          <button id="delBtn" class="op-btn">Delete</button>
+        </div>
+      </div>
+
+      <!-- Linear search -->
+      <div class="panel hidden" id="panel-linear">
+        <div class="row">
+          <label>Value to find <input id="linTarget" type="number" value="40"></label>
+          <button id="linBtn" class="op-btn">Search</button>
+        </div>
+      </div>
+
+      <!-- Binary search -->
+      <div class="panel hidden" id="panel-binary">
+        <p class="hint">The array must be sorted in ascending order. Use "Sort ascending" above if needed.</p>
+        <div class="row">
+          <label>Value to find <input id="binTarget" type="number" value="40"></label>
+          <button id="binBtn" class="op-btn">Search</button>
+        </div>
+      </div>
+
+      <label class="speed">Animation speed
+        <input id="speed" type="range" min="1" max="10" value="5">
+      </label>
+    </section>
+
+    <!-- ===== 3. Step-by-step explanation ===== -->
+    <section class="card">
+      <h2>Steps</h2>
+      <ol id="steps" class="steps"><li class="placeholder">Steps appear here when you run an operation.</li></ol>
+    </section>
+
+    <section class="legend">
+      <span><i class="dot check"></i>Being checked</span>
+      <span><i class="dot moving"></i>Copied into</span>
+      <span><i class="dot source"></i>Copied from</span>
+      <span><i class="dot found"></i>Found / inserted</span>
+      <span><i class="dot removed"></i>Deleted</span>
+      <span><i class="dot miss"></i>Not a match</span>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
