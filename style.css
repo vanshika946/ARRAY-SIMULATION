@@ -29,7 +29,7 @@ body {
 .letter:nth-child(5) { --c: #ffb3c6; }
 .page-header p { margin: 16px 0 0; color: var(--muted); }
 
-main { max-width: 980px; margin: 0 auto; padding: 16px; display: grid; gap: 20px; }
+main { max-width: 980px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
 .card {
   background: var(--card); border: 3px solid var(--ink); border-radius: 16px;
   padding: 18px 20px; box-shadow: var(--shadow);
@@ -126,3 +126,59 @@ button.danger { background: var(--removed); }
   input[type="number"] { width: 100%; } label { flex: 1 1 45%; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ===== Sorting tab ===== */
+.box.sorted { background: #d3f5ec; border-color: var(--found); }      /* in its final place */
+.box.pivot  { background: #e2d9ff; border-color: var(--accent); transform: translateY(-6px); }
+.dot.sorted { background: #d3f5ec; } .dot.pivot { background: #e2d9ff; }
+
+/* the 7 links */
+.sort-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.sort-links a {
+  padding: 6px 14px; color: var(--ink); background: #fff; font-weight: 700; text-decoration: none;
+  border: 3px solid var(--ink); border-radius: 22px; box-shadow: 2px 2px 0 var(--ink);
+}
+.sort-links a:hover { background: #ece6ff; }
+.sort-links a[aria-current="true"] { background: var(--accent); color: #fff; }
+.sort-links a:focus-visible { outline: 3px solid var(--check); outline-offset: 2px; }
+
+.sort-controls { align-items: center; }
+.counter { font: 700 .9rem var(--mono); color: var(--muted); }
+
+/* explanation + algorithm side by side */
+.sort-info { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; margin-top: 8px; }
+.sort-info h3 { margin: 0 0 6px; font-size: 1.25rem; }
+.sort-info h4 { margin: 16px 0 6px; font-size: 1rem; }
+.sort-info p { margin: 6px 0; }
+.sort-info ol { margin: 0; padding-left: 22px; }
+.sort-info ol li { margin: 3px 0; }
+.analogy { padding: 8px 12px; background: #fff6d6; border: 3px dashed var(--ink); border-radius: 12px; }
+
+.complexity { width: 100%; margin-top: 16px; border-collapse: collapse; font-size: .85rem; text-align: center; }
+.complexity caption { text-align: left; font-weight: 700; padding-bottom: 4px; }
+.complexity th, .complexity td { padding: 6px 4px; border: 2px solid var(--ink); }
+.complexity th { background: #ece6ff; }
+
+/* pseudocode box with line numbers; the running line turns orange */
+.sort-info ol.code {
+  list-style: none; margin: 0; padding: 10px; color: #ece8ff; background: var(--ink);
+  border-radius: 12px; font: .85rem/1.8 var(--mono); counter-reset: ln; overflow-x: auto;
+}
+.code li { counter-increment: ln; padding: 0 8px; margin: 0; border-radius: 6px; white-space: pre; }
+.code li::before { content: counter(ln); display: inline-block; width: 1.8em; margin-right: 10px; text-align: right; color: #9b92d6; }
+.code li.active { background: var(--moving); color: #1b1030; font-weight: 700; }
+.code li.active::before { color: #1b1030; }
+
+/* extra picture under the array: temp array (merge), key (insertion), buckets (radix) */
+.aux-view { margin: 0 0 16px; padding: 10px 12px; background: #f5f1ff; border: 3px dashed var(--ink); border-radius: 14px; }
+.aux-title { margin-bottom: 8px; font-weight: 700; }
+.aux-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.aux-row .box.mini { width: 56px; height: 44px; font-size: 1rem; }
+.buckets { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+.bucket { min-height: 96px; padding: 4px; background: #fff; border: 3px solid var(--ink); border-radius: 10px; text-align: center; }
+.bucket.active { background: #fff0a8; }
+.bucket-head { margin-bottom: 4px; font: 800 .8rem var(--mono); border-bottom: 2px dashed var(--dot); }
+.chip { margin: 3px 0; padding: 1px 0; font: 700 .85rem var(--mono); background: #cfe1ff; border: 2px solid var(--ink); border-radius: 6px; }
+
+@media (max-width: 760px) { .sort-info { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .chip { font-size: .7rem; } .bucket { padding: 2px; } }
