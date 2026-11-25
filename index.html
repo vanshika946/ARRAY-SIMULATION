@@ -16,7 +16,7 @@
       <span class="letter" aria-hidden="true"><b>A</b><i>3</i></span>
       <span class="letter" aria-hidden="true"><b>Y</b><i>4</i></span>
     </h1>
-    <p>Array Simulation: watch addresses, insertion, deletion and searching happen one step at a time.</p>
+    <p>Array Simulation: watch addresses, insertion, deletion, searching and sorting happen one step at a time.</p>
   </header>
 
   <main>
@@ -33,6 +33,7 @@
       <p class="hint">Enter up to 12 whole numbers (-999 to 9999), separated by commas or spaces. The small number under each box is its memory address, worked out from the base address and element size in the Address tab.</p>
 
       <div id="arrayView" class="array-view" aria-live="polite"></div>
+      <div id="auxView" class="aux-view hidden"></div>
       <div id="status" class="status info">Ready. Pick an operation below.</div>
     </section>
 
@@ -44,6 +45,7 @@
         <button class="tab" data-op="delete">Deletion</button>
         <button class="tab" data-op="linear">Linear search</button>
         <button class="tab" data-op="binary">Binary search</button>
+        <button class="tab" data-op="sorting">Sorting algorithms</button>
       </nav>
 
       <!-- Address calculation -->
@@ -92,6 +94,54 @@
         </div>
       </div>
 
+      <!-- Sorting algorithms -->
+      <div class="panel hidden" id="panel-sorting">
+        <!-- one link per algorithm -->
+        <nav class="sort-links" aria-label="Sorting algorithms">
+          <a href="#sort-selection" data-sort="selection">Selection sort</a>
+          <a href="#sort-bubble" data-sort="bubble">Bubble sort</a>
+          <a href="#sort-insertion" data-sort="insertion">Insertion sort</a>
+          <a href="#sort-quick" data-sort="quick">Quick sort</a>
+          <a href="#sort-merge" data-sort="merge">Merge sort</a>
+          <a href="#sort-shell" data-sort="shell">Shell sort</a>
+          <a href="#sort-radix" data-sort="radix">Radix sort</a>
+        </nav>
+
+        <!-- simulation controls -->
+        <div class="row sort-controls">
+          <button id="sortPlay">Play</button>
+          <button id="sortBack" class="secondary" disabled>Back</button>
+          <button id="sortNext" class="secondary">Next</button>
+          <button id="sortRestart" disabled>Restart</button>
+          <button id="sortRandom" class="secondary">Random array</button>
+          <span id="sortCounter" class="counter">Not started</span>
+        </div>
+        <p class="hint">The sort works on a copy, so your array is not changed. Use "Sort ascending" above if you want to keep a sorted array for binary search.</p>
+
+        <!-- explanation (left) and algorithm (right) -->
+        <div class="sort-info">
+          <div class="sort-explain">
+            <h3 id="sortName">Selection sort</h3>
+            <p id="sortIdea"></p>
+            <p id="sortAnalogy" class="analogy"></p>
+            <h4>How it works</h4>
+            <ol id="sortHow"></ol>
+            <table class="complexity">
+              <caption>Time and space</caption>
+              <thead><tr><th>Best</th><th>Average</th><th>Worst</th><th>Extra space</th><th>Stable</th></tr></thead>
+              <tbody><tr><td id="cxBest"></td><td id="cxAvg"></td><td id="cxWorst"></td><td id="cxSpace"></td><td id="cxStable"></td></tr></tbody>
+            </table>
+          </div>
+          <div class="sort-algo">
+            <h4>Algorithm</h4>
+            <ol id="sortCode" class="code" aria-label="Algorithm"></ol>
+            <p class="hint">The orange line is the one running in the simulation.</p>
+            <h4>Good to know</h4>
+            <p id="sortNote"></p>
+          </div>
+        </div>
+      </div>
+
       <label class="speed">Animation speed
         <input id="speed" type="range" min="1" max="10" value="5">
       </label>
@@ -110,6 +160,8 @@
       <span><i class="dot found"></i>Found / inserted</span>
       <span><i class="dot removed"></i>Deleted</span>
       <span><i class="dot miss"></i>Not a match</span>
+      <span><i class="dot sorted"></i>Sorted (final place)</span>
+      <span><i class="dot pivot"></i>Pivot</span>
     </section>
   </main>
 
